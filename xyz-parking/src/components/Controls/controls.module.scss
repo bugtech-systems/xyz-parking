@@ -1,0 +1,26 @@
+.controls {
+  button {
+    cursor: pointer;
+  }
+  
+  .disabledBtn {
+    opacity: .3;
+    background-color: gainsboro !important;
+  }
+
+}
+
+.submitBtn {
+  transition: border-radius 0.15s;
+  width: 100% !important;
+  border-radius: 40px;
+  font-size: small !important;
+
+  &:hover {
+    border-radius: 40px;
+    cursor: pointer;
+  }
+  
+
+}
+

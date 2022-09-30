@@ -1,0 +1,53 @@
+.main {
+  display: flex;
+  flex-flow: row-reverse;
+  min-width: 250px;
+  min-height: 300px;
+  align-items: center;
+  justify-content: space-around;
+  flex-grow: 1;
+  .row {
+    margin: 0 0.3rem;
+  }
+}
+
+.main1 {
+  display: flex;
+  flex-flow: row-reverse;
+  min-width: 25px;
+  height: 400px;
+  align-items: center;
+  justify-content: space-around;
+  flex-grow: 1;
+  .row {
+    margin: 0 0.5rem;
+  }
+}
+
+.dashboard {
+  min-height: 323px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0.5rem;
+}
+
+.footerNote {
+  font-weight: 100;
+  color: green;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+
+.submitBtn {
+  transition: border-radius 0.15s;
+  width: 100% !important;
+  border-radius: 40px;
+  
+  &:hover {
+    border-radius: 40px;
+    cursor: pointer;
+  }
+  
+}

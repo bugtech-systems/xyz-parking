@@ -1,0 +1,59 @@
+.landing {
+  h2 {
+    font-size: 2.5rem;
+    margin-left: 50px;
+    @media screen and (min-width: 50rem) {
+      font-size: 4.5rem;
+    }
+  }
+
+
+
+  section {
+    width: 100%;
+    padding: 10px;
+    @media only screen and (min-width: 1080px) {
+      width: 59%;
+      padding: 10px;
+    }
+  }
+
+
+  .sectionContainer{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 300px;
+  }
+
+
+
+  .title {
+    text-align: center;
+    margin: 1rem 0;
+    font-weight: 300;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+      sans-serif;
+  }
+
+  .errorMessage {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+  }
+
+    .submitBtn {
+      transition: border-radius 0.15s;
+      width: 100% !important;
+      border-radius: 40px;
+
+      &:hover {
+        border-radius: 40px;
+        cursor: pointer;
+      }
+      
+  }
+
+ 
+}
+

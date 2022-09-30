@@ -1,0 +1,77 @@
+.parkingSlot {
+  max-width: 150px;
+  min-width: 100px;
+  height: 50px;
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  color: white;
+  background-color: darkgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 5px 0 10px #000000;
+  margin: 0;
+  font-size: 0.785rem;
+  padding: 1rem;
+
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  @media screen and (min-width: 50rem) {
+    margin: 1rem 0;
+  }
+
+  &:first-child {
+    border-top: 2px solid white;
+  }
+
+  &:last-child {
+    border-bottom: 2px solid white;
+  }
+}
+
+.busy {
+  background-color: hsl(0, 72%, 59%);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+.busyS {
+  background-color: hsl(356, 80%, 51%);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+.busyM {
+  background-color: hsl(62, 92%, 29%);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.busyL {
+  background-color: hsl(128, 93%, 27%);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.inactive {
+  color: white !important;
+  opacity: .3;
+}
+
+.active {
+  opacity: 1;
+}

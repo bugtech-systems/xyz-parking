@@ -1,0 +1,1 @@
+export { CarInfoBoard } from "./CarInfoBoard";

@@ -1,0 +1,106 @@
+img {
+  width: 100px;
+  height: 75px;
+  opacity: 1;
+}
+
+.hidden { 
+  display: none !important;
+  opacity: 0;
+}
+
+.flip {
+  -webkit-transform: scaleX(-1) !important;
+  transform: scaleX(-1) !important;
+}
+
+.unFlip {
+  opacity: 0;
+
+  /* -webkit-transform: scaleX(1) !important; */
+  /* transform: scaleX(1) !important; */
+}
+
+
+
+.fade-enter .car-front {
+  opacity: 0;
+  transform: translateX(0%);
+  /* -webkit-transform: scaleX(-1) ;
+  transform: scaleX(-1) ; */
+}
+
+.fade-enter-done .car-front {
+  opacity: 0;
+  transform: translateX(350%);
+  /* -webkit-transform: scaleX(-1); */
+  /* transform: scaleX(-1) ; */
+}
+
+.fade-enter-active .car-front {
+  opacity: 0;
+  transform: translateX(0%);
+  /* -webkit-transform: scaleX(-1) ; */
+  /* transform: scaleX(-1) ; */
+}
+
+.fade-exit .car-front {
+  opacity: 1;
+  transform: translateX(0%);
+  
+}
+.fade-exit-active .car-front {
+  /* -webkit-transform: scaleX(-1) !important; */
+  /* transform: scaleX(-1) !important; */
+  opacity: 1;
+  transform: translateX(350%);
+  
+  /* -webkit-transform: scaleX(1) ;
+  transform: scaleX(1) ; */
+  
+}
+.fade-enter-active .car-front,
+.fade-exit-active .car-front {
+  transition: opacity 500ms, transform 500ms;
+}
+
+
+
+.fade-enter .car-back {
+  opacity: 0;
+  transform: translateX(0%);
+}
+
+.fade-enter-done .car-back {
+  opacity: 0;
+  transform: translateX(-350%);
+  /* -webkit-transform: scaleX(-1); */
+  /* transform: scaleX(-1) ; */
+}
+
+.fade-enter-active .car-back {
+  opacity: 0;
+  transform: translateX(0%);
+  /* -webkit-transform: scaleX(-1) ; */
+  /* transform: scaleX(-1) ; */
+}
+
+.fade-exit .car-back {
+  opacity: 1;
+  transform: translateX(350%);
+  
+}
+.fade-exit-active .car-back {
+  /* -webkit-transform: scaleX(-1) !important; */
+  /* transform: scaleX(-1) !important; */
+  opacity: 1;
+  transform: translateX(0%);
+  
+  /* -webkit-transform: scaleX(1) ;
+  transform: scaleX(1) ; */
+  
+}
+.fade-enter-active .car-back,
+.fade-exit-active .car-back {
+  transition: opacity 500ms, transform 500ms;
+}
