@@ -10,7 +10,7 @@ export const Car = ({ animationState, type, car, show }) => {
   let  carStyle = type === 'in' ? 'car-front' : 'car-back';
   return (
     <div className="car-container">
-      {/* {car.name &&  */}0
+      {/* {car.name &&  */}
       <CSSTransition
         unmountOnExit
         in={!animationState}

@@ -129,9 +129,9 @@ let comp = data.computation ? data.computation : {};
     </div>
     <div className={styles.infoBodyCard}>
         <div className={styles.label}>Amount Due</div>
-        <strong><span className={styles.text}>{comp.due}</span></strong>
+        <strong><span className={styles.text}>{new Intl.NumberFormat('en-US',
+  { style:'currency', currency: 'PHP' }).format(comp.due)}</span></strong>
     </div>
- 
     <br/>
             <div className={styles.carCard}>
      {data.imgFront &&  <img src={data.imgBack} alt={`${String(data.size).toUpperCase()} CAR`} />
