@@ -81,6 +81,9 @@ app.post("/park", async (req, res) => {
 
     let park = await ParkingsModel.findOne({numberPlate}).populate('slot');
 
+
+
+
     if(park){
         let mySlot = await SlotsModel.findById(slot._id)
 
@@ -97,32 +100,34 @@ app.post("/park", async (req, res) => {
      
         let start = moment(park.parkedStart);
         let hrs = moment().diff(start, 'hours');
-     if(hrs <= 3){
+     if(hrs <= 1){
         mySlot.parking = park;
         mySlot.isBusy = true;
         mySlot.save();
-        return  res.status(200).json({data: park});
+    } 
+
+
+    return  res.status(200).json({data: park});
+
     } else {
 
+let mySlot = await SlotsModel.findById(slot._id)
 
-    let mySlot = await SlotsModel.findById(slot._id)
-
-    if(!mySlot){
-        return res.status(400).json({message: 'Slot not found!'})
-    }
-
-    ParkingsModel.create(req.body)
-    .then(a => {
-        mySlot.parking = a;
-        mySlot.isBusy = true;
-        mySlot.save();
-        res.status(200).json({data: a});
-    })
-    .catch(function(error){
-        console.log(error)      // Failure
-        res.status(400).json({message: 'Something Went wrong!'})
-    });
+if(!mySlot){
+    return res.status(400).json({message: 'Slot not found!'})
 }
+
+ParkingsModel.create(req.body)
+.then(a => {
+    mySlot.parking = a;
+    mySlot.isBusy = true;
+    mySlot.save();
+    res.status(200).json({data: a});
+})
+.catch(function(error){
+    console.log(error)      // Failure
+    res.status(400).json({message: 'Something Went wrong!'})
+});
 }
 })
 
