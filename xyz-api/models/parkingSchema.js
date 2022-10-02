@@ -16,7 +16,7 @@ var ParkingSchema = new mongoose.Schema({
     },
     slot: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Parking"
+            ref: "Slots"
     }
 });
  

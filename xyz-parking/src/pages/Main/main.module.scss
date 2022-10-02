@@ -33,8 +33,15 @@
 }
 
 .footerNote {
-  font-weight: 100;
+  font-weight: bold;
   color: green;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.footerNoteErr {
+  font-weight: bold;
+  color: red;
   margin: 1rem 0;
   text-align: center;
 }

@@ -2,6 +2,9 @@ const EXPRESS = require('express');
 const http = require("http");
 const cors = require('cors')
 const mongoose = require("mongoose");
+const moment = require('moment');
+const momentz = require('moment-timezone')
+
 var SlotsModel = require('./models/slotSchema');
 var ParkingsModel = require('./models/parkingSchema');
 
@@ -17,6 +20,10 @@ const connection = mongoose.connection;
 connection.once("open", function() {
   console.log("MongoDB database connection established successfully");
 });
+
+//local timezone
+momentz.tz.setDefault('Asia/Manila');
+
 
 
 app.use(cors({
@@ -54,7 +61,6 @@ app.post("/slots", (req, res) => {
     SlotsModel.deleteMany({})
     .then(() => {
         SlotsModel.insertMany(slotsArr).then(function(){
-            console.log("Data inserted")  // Success
             res.status(200).json({id: slotsId});
         }).catch(function(error){
             console.log(error)      // Failure
@@ -69,9 +75,41 @@ app.post("/slots", (req, res) => {
 //Park Car
 app.post("/park", async (req, res) => {
     
-    let { slot } = req.body;
+    let { slot, numberPlate, slotType } = req.body;
 
-   let mySlot = await SlotsModel.findById(slot._id)
+  
+
+    let park = await ParkingsModel.findOne({numberPlate}).populate('slot');
+
+    if(park){
+        let mySlot = await SlotsModel.findById(slot._id)
+
+       
+
+        if(!mySlot){
+            return res.status(400).json({message: 'Slot not found!'})
+        }
+
+        if(!park.parkedEnd){
+            return res.status(400).json({message: 'Still on parking!'})
+        }
+  
+     
+        let start = moment(park.parkedStart);
+        let hrs = moment().diff(start, 'hours');
+     if(hrs <= 3){
+        mySlot.parking = park;
+        mySlot.isBusy = true;
+        mySlot.save();
+        return  res.status(200).json({data: park});
+    } else {
+
+
+    let mySlot = await SlotsModel.findById(slot._id)
+
+    if(!mySlot){
+        return res.status(400).json({message: 'Slot not found!'})
+    }
 
     ParkingsModel.create(req.body)
     .then(a => {
@@ -84,6 +122,8 @@ app.post("/park", async (req, res) => {
         console.log(error)      // Failure
         res.status(400).json({message: 'Something Went wrong!'})
     });
+}
+}
 })
 
 //Unpark Car
@@ -91,13 +131,15 @@ app.get("/unpark/:id", async (req, res) => {
     let { id } = req.params 
 
    let mySlot = await SlotsModel.findById(id)
+   let park = await ParkingsModel.findById(mySlot.parking._id)
 
 
    mySlot.isBusy = false;
+   park.parkedEnd = new Date;
    delete mySlot.parking;
 
     mySlot.save();
-
+    park.save();
     
         res.status(200).json({message: 'Unparked successfully!'});
    

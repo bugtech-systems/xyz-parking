@@ -18,6 +18,7 @@ import mcarUrl from "../../assets/mcar.png";
 import mcarUrl1 from "../../assets/mcar1.png";
 import lcarUrl from "../../assets/lcar.png";
 import lcarUrl1 from "../../assets/lcar1.png";
+import { SlotInfoBoard } from "../../components/SlotInfoBoard";
 
 let cars = [
   { size: 'small',
@@ -51,7 +52,7 @@ export const Main = ({ parkingData }) => {
   const [cardDisplay, setCardDisplay] = useState({});
   const [cardOpen, setCardOpen] = useState(false);
   const [cardType, setCardType] = useState('info');
-
+  const [message, setMessage] = useState(null)
   let slotsId = localStorage.getItem('slotsId');
 
 
@@ -65,7 +66,7 @@ export const Main = ({ parkingData }) => {
 
     setCardOpen(false)
     setCardDisplay({});
-    setCardType('infor')
+    setCardType('info')
 
 
   }
@@ -84,16 +85,12 @@ export const Main = ({ parkingData }) => {
   }
 
 
-  const handlePark = (vals) => {
+  const handlePark = async (vals) => {
 
     
-    setCardOpen(false);
     
     if(availableSlots === 0) return console.log('OVER LOADED!') 
-    setCarDir('in')
-    setCarAnimation((state) => true);
-
-    setCardDisplay(vals)
+ 
   
     
     if (parkingLot.isFull()) {
@@ -101,9 +98,14 @@ export const Main = ({ parkingData }) => {
       return;
     }
    
+    let park = await parkingLot.park(vals);
 
-    parkingLot.park(vals)
-    .then(() => {
+    if(!park.message){
+        setCardOpen(false);
+          setCarDir('in')
+      setCarAnimation((state) => true);
+  
+      setCardDisplay(vals)
       getAllSlots(slotsId)
 
       setTimeout(() => {
@@ -111,11 +113,17 @@ export const Main = ({ parkingData }) => {
           setCarAnimation((state) => false);
           setLoading(false)
           setCardDisplay({});
+
       }, 500)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      setMessage(null)
+    } else {
+        setMessage(park.message);
+      setAvailableSlots(parkingLot.getAvailable());
+      setCarAnimation((state) => false);
+      setLoading(false)
+      setCardDisplay({});
+    }
+  
   }
 
 
@@ -123,7 +131,7 @@ export const Main = ({ parkingData }) => {
   useEffect(() => {
     let id = localStorage.getItem('slotsId');
     if(id){
-      getAllSlots(id)
+      getAllSlots()
     }
   }, [])
 
@@ -205,12 +213,36 @@ export const Main = ({ parkingData }) => {
   };
 
   const handleShowSummary = (vals) => {
+    if(vals.isBusy){
     let {parking } = vals;
     let computation = parkingLot.compute(parking);
     let img = cars.find(a => a.size === parking.carType);
     setCardDisplay({ ...img, ...vals, computation})
     setCardOpen(true);
     setCardType('summary')
+    } else {
+
+      setCardDisplay({...vals, entrances: Array.from(Array(parkingData.entrance).keys())})
+      setCardOpen(true);
+      setCardType('config')
+    }
+   
+  };
+
+  const handleUpdateSlot = (vals) => {
+    parkingLot.update(vals._id, vals)
+    .then(() => {
+      getAllSlots()
+      setTimeout(() => {
+          setAvailableSlots(parkingLot.getAvailable());
+          setCarAnimation((state) => false);
+          setLoading(false)
+          handleClose();
+        }, 500)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   };
 
 
@@ -221,9 +253,11 @@ export const Main = ({ parkingData }) => {
         
         getInfo={handleGetInfo} loading={loading} />} */}
         <div className={styles.main}>
-      {cardOpen ? 
+      {cardOpen ? cardType !== 'config' ?
      <CarInfoBoard type={cardType} availableSlotsCount={availableSlots} handlePark={handlePark} handleUnpark={handleUnpark} handleClose={() => handleClose()} data={cardDisplay}/>
-      : !carAnimation &&<button type="submit" onClick={() => { setCardOpen(true); setCardType('info'); setCardDisplay({}) }} className={styles.submitBtn} >ENTER VEHICLE</button>
+     : 
+     <SlotInfoBoard handleUpdate={handleUpdateSlot} handleClose={() => handleClose()} data={cardDisplay}/>
+     : !carAnimation &&<button type="submit" onClick={() => { setCardOpen(true); setCardType('info'); setCardDisplay({}) }} className={styles.submitBtn} >ENTER VEHICLE</button>
     }      
     </div>
    <Car animationState={carAnimation} type={carDir} car={cardDisplay} show={!cardOpen && cardDisplay.size}/>
@@ -246,9 +280,14 @@ export const Main = ({ parkingData }) => {
           </div>
         ))}
         </div>
-        <div className={styles.footerNote}>
-          Click on a busy parking slot to unpark the car.
-        </div>
+        {!message ? <div className={styles.footerNote}>
+      Click on a parking slot to unpark the car or configure slot.
+        </div> 
+        :
+        <div className={styles.footerNoteErr}>
+        {message}
+          </div> 
+           }
       </section>
      
      

@@ -9,7 +9,7 @@ var SlotSchema = new mongoose.Schema({
     nearestEntrance: [Number],
     slotType: {
         type: String, enum:["small","medium", "large"],
-        default: "large"
+        default: "medium"
     },
     slotsId: Number,
     parking: {

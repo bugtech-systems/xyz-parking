@@ -11,7 +11,7 @@ export const ParkingSlot = ({data, remove, loading}) => {
       className={`${styles.parkingSlot}  ${bgColor} ${!isBusy ? styles.inactive : styles.active}`}
       onClick={() => remove(data)}
     >
-      {isBusy ? numberPlate  : `E-${nearestEntrance[0] + 1} | ${String(slotType).toUpperCase()}`}
+      {isBusy ? numberPlate  : <div className={styles.slotCard}><div>{`Entance-${String(nearestEntrance[0] + 1).toUpperCase()}`}</div><div>{`${String(slotType).toUpperCase()}`}</div></div>}
     </div>
   );
 };

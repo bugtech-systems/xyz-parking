@@ -21,9 +21,10 @@ class ParkingLot {
   }
 
   park(vals) {
-    let {numberPlate, size, entry} = vals;
+    let { size, entry} = vals;
     let sizeOption = size === 'large' ? ['large'] : size === 'medium' ? ['medium', 'large'] : size === 'small' ? ['small', 'medium', 'large'] : [];
     let prioritySlots = [];
+    let prioritySizes = [];
     if (this.slots.every((slot) => slot.isBusy !== false)) {
       return false;
     }
@@ -47,11 +48,24 @@ class ParkingLot {
 
 
     let fltrSize = mappedData.filter(a => {
-         return (a.slotType === sz || a.nearestIndex === entry);
+         return a.slotType === sz;
     });
-    prioritySlots = [...prioritySlots, ...fltrSize]
+
+
+
+    let nearestSize = mappedData.filter(a => {
+      return  (a.slotType === sz || a.nearestIndex === entry);
+ });
+
+
+    prioritySlots = [...prioritySlots, ...nearestSize];
+    prioritySizes = [...prioritySizes, ...fltrSize];
 
   }
+
+  
+  console.log('FLLTTE')
+  console.log(prioritySizes)
 
 
 
@@ -62,8 +76,10 @@ class ParkingLot {
 
     if (!slot) {
       console.log('No Slot Available!')
-      return false;
-    }
+      return {message: 'No Slot Available!'};
+    } else {
+
+
 
     vals.slot = slot;
     vals.parkedStart = new Date;
@@ -87,7 +103,10 @@ class ParkingLot {
     })
     .catch(err => {
       console.log(err)
+      return err.response.data;
     })
+  }
+
     // return dta
   }
 
@@ -100,6 +119,23 @@ class ParkingLot {
 
 
     return axios.get(`http://localhost:4000/unpark/${_id}`)
+    .then(({data}) => {
+        return data
+    })
+    .catch(err => {
+      console.log(err)
+      return err
+    })
+  }
+
+  update(_id, data) {
+    console.log(`Updating slot: ${_id}`);
+    if (!_id || !data) {
+      return false;
+    }
+
+
+    return axios.put(`http://localhost:4000/slot/${_id}`, data)
     .then(({data}) => {
         return data
     })
