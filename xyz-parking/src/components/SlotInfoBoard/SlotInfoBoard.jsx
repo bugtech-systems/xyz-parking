@@ -57,8 +57,9 @@ useEffect(() => {
 // let nearest = 
 
 
- let disable = (!values.slotNum || values.nearestEntrance.length === 0 || !values.slotType)
-
+ let disable = (values.nearestEntrance.length === 0 || !values.slotType)
+console.log(data)
+console.log(values)
   return (
     <>
     <div className={`${styles.infoBoard} ${styles.mt50}`}>

@@ -20,7 +20,7 @@ class ParkingLot {
     this.parkingData = parkingData.data;
   }
 
-  park(vals) {
+  async park(vals) {
     let { size, entry} = vals;
     let sizeOption = size === 'large' ? ['large'] : size === 'medium' ? ['medium', 'large'] : size === 'small' ? ['small', 'medium', 'large'] : [];
     let prioritySlots = [];
@@ -64,9 +64,6 @@ class ParkingLot {
   }
 
   
-  console.log('FLLTTE')
-  console.log(prioritySizes)
-
 
 
     //Get First Value on the Array.
@@ -97,8 +94,9 @@ class ParkingLot {
     //     return true;
     //   }
     // }
-    return  axios.post(`http://localhost:4000/park`, vals)
+    return await axios.post(`http://localhost:4000/park`, vals)
     .then(({data}) => {
+      console.log(data)
         return data
     })
     .catch(err => {
@@ -145,29 +143,42 @@ class ParkingLot {
     })
   }
 
-  compute(vals = {}) {
+  compute(vals = {parkedEnd: null, parkedStart: null}) {
     let start = moment(vals.parkedStart);
     let rt = rates.find(a => a.name === vals.slotType)
     let due = 0;
-   let hrs = moment().diff(start, 'hours');
+   let hrs = moment().diff(start, 'hours') + 1;
 
-    if(hrs < 3){
+//W/ 24 hours chunk. 
+
+      if(hrs >= 24){
+        let d = Math.floor(hrs / 24);
+        let td = d * 24;
+        let exc = hrs - td;
+        let ttd = 5000 * d;
+        let th = exc * Number(rt.rate);
+        due = ttd + th
+      }
+
+    if(hrs < 3 && !vals.parkedEnd){
       due = 40;
     }
 
-    if(hrs >= 24){
-      let d = Math.floor(hrs / 24);
-      let td = d * 24;
-      let exc = hrs - td;
-      let ttd = 5000 * d;
-      let th = exc * Number(rt.rate);
-      due = ttd + th + 40;
+    if(!vals.parkedEnd){
+      if(hrs < 24 && hrs >= 3){
+        let th = (hrs - 3) * Number(rt.rate);
+        due = th + 40;
+      }
+    } else {
+      console.log('MYDA END')
+      if(hrs < 24){
+        let th = hrs * Number(rt.rate);
+        due = th;
+      }
     }
 
-    if(hrs < 24 && hrs > 3){
-      let th = hrs * Number(rt.rate);
-      due = th;
-    }
+  
+  
 
 
 

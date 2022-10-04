@@ -1,0 +1,161 @@
+[{
+  "_id": {
+    "$oid": "633c7145c20e80069dbf3e04"
+  },
+  "numberPlate": "106-SIF",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d636c"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664819141217"
+    }
+  },
+  "slotType": "medium",
+  "carType": "medium",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c7153c20e80069dbf3e0b"
+  },
+  "numberPlate": "103-KVX",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d6370"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664883955811"
+    }
+  },
+  "slotType": "small",
+  "carType": "small",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c71c9c20e80069dbf3e12"
+  },
+  "numberPlate": "047-UQD",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d6372"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664905673150"
+    }
+  },
+  "slotType": "large",
+  "carType": "large",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c71e1c20e80069dbf3e19"
+  },
+  "numberPlate": "699-JMG",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d636f"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664902097264"
+    }
+  },
+  "slotType": "medium",
+  "carType": "small",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c71f2c20e80069dbf3e20"
+  },
+  "numberPlate": "455-JSW",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d6371"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664905714661"
+    }
+  },
+  "slotType": "medium",
+  "carType": "medium",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c71fbc20e80069dbf3e27"
+  },
+  "numberPlate": "479-ZGB",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d636d"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664905723006"
+    }
+  },
+  "slotType": "small",
+  "carType": "small",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c7203c20e80069dbf3e2e"
+  },
+  "numberPlate": "359-DMO",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d636e"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664905731875"
+    }
+  },
+  "slotType": "large",
+  "carType": "large",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c720fc20e80069dbf3e35"
+  },
+  "numberPlate": "494-PDN",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d6374"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664905743532"
+    }
+  },
+  "slotType": "small",
+  "carType": "small",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c7219c20e80069dbf3e3c"
+  },
+  "numberPlate": "704-ALK",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d6375"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664905753364"
+    }
+  },
+  "slotType": "large",
+  "carType": "medium",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633c722bc20e80069dbf3e43"
+  },
+  "numberPlate": "450-SEW",
+  "slot": {
+    "$oid": "633c5f6390d07c95c75d6373"
+  },
+  "parkedStart": {
+    "$date": {
+      "$numberLong": "1664905771661"
+    }
+  },
+  "slotType": "medium",
+  "carType": "medium",
+  "__v": 0
+}]

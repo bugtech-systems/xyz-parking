@@ -5,15 +5,18 @@ const mongoose = require("mongoose");
 const moment = require('moment');
 const momentz = require('moment-timezone')
 
-var SlotsModel = require('./models/slotSchema');
-var ParkingsModel = require('./models/parkingSchema');
+var SlotsModel = require('./slotSchema');
+var ParkingsModel = require('./parkingSchema');
 
 const app = new EXPRESS()
 
 
-var uri = "mongodb://localhost:27017/xyzparking";
+var uri = "mongodb://localhost:27017/xyzparkings";
 
-mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(uri, { 
+    useUnifiedTopology: true, 
+    useNewUrlParser: true
+ });
 
 const connection = mongoose.connection;
 
@@ -50,7 +53,6 @@ app.post("/slots", (req, res) => {
     let slotsId = Math.floor(Math.random()*90000) + 10000;
     let nearestEntrances = Array.from(Array(entrance).keys());
 
-
     for(let i = 0; i < slots; i++){
         slotsArr.push({
             slotNum: i,
@@ -58,6 +60,7 @@ app.post("/slots", (req, res) => {
             nearestEntrance: nearestEntrances
         })
     }
+
     SlotsModel.deleteMany({})
     .then(() => {
         SlotsModel.insertMany(slotsArr).then(function(){
@@ -79,54 +82,58 @@ app.post("/park", async (req, res) => {
 
   
 
-    let park = await ParkingsModel.findOne({numberPlate}).populate('slot');
+    let park = await ParkingsModel.findOne({numberPlate})
 
+    
+    if(!park.parkedEnd){
+        console.log("still on park")
+            return res.status(400).json({message: 'Still on parking!'})
+        }
 
-
-
-    if(park){
         let mySlot = await SlotsModel.findById(slot._id)
-
-       
 
         if(!mySlot){
             return res.status(400).json({message: 'Slot not found!'})
         }
 
-        if(!park.parkedEnd){
-            return res.status(400).json({message: 'Still on parking!'})
-        }
-  
-     
-        let start = moment(park.parkedStart);
+
+        let start = moment(park.parkedEnd);
         let hrs = moment().diff(start, 'hours');
-     if(hrs <= 1){
+
+
+    if(park && hrs < 1){
+
+     
+  
+        console.log('W/1 1 hr')
         mySlot.parking = park;
         mySlot.isBusy = true;
         mySlot.save();
-    } 
-
-
-    return  res.status(200).json({data: park});
+        park.slot = mySlot;
+        park.parkedStart = new Date;
+        park.save();
+        return res.status(200).json({data: 'done'});
 
     } else {
 
-let mySlot = await SlotsModel.findById(slot._id)
-
-if(!mySlot){
-    return res.status(400).json({message: 'Slot not found!'})
-}
-
-ParkingsModel.create(req.body)
+        console.log('NOT RETURNEE')
+return ParkingsModel.create({
+    slotType,
+    carType,
+    numberPlate,
+    slot: mySlot
+})
 .then(a => {
+    console.log('SLOT CREATED')
+    console.log(a);
     mySlot.parking = a;
     mySlot.isBusy = true;
     mySlot.save();
-    res.status(200).json({data: a});
+    return res.status(200).json({data: 'done'});
 })
 .catch(function(error){
     console.log(error)      // Failure
-    res.status(400).json({message: 'Something Went wrong!'})
+   return res.status(400).json({message: 'Something Went wrong!'})
 });
 }
 })
@@ -138,7 +145,6 @@ app.get("/unpark/:id", async (req, res) => {
    let mySlot = await SlotsModel.findById(id)
    let park = await ParkingsModel.findById(mySlot.parking._id)
 
-
    mySlot.isBusy = false;
    park.parkedEnd = new Date;
    delete mySlot.parking;
@@ -146,8 +152,7 @@ app.get("/unpark/:id", async (req, res) => {
     mySlot.save();
     park.save();
     
-        res.status(200).json({message: 'Unparked successfully!'});
-   
+    res.status(200).json({message: 'Unparked successfully!'});
 })
 
 

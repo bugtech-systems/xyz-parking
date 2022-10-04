@@ -67,7 +67,7 @@ export const Main = ({ parkingData }) => {
     setCardOpen(false)
     setCardDisplay({});
     setCardType('info')
-
+    setMessage(null)
 
   }
   const getAllSlots = () => {
@@ -87,10 +87,12 @@ export const Main = ({ parkingData }) => {
 
   const handlePark = async (vals) => {
 
+    setMessage(null)
     
-    
-    if(availableSlots === 0) return console.log('OVER LOADED!') 
- 
+    if(availableSlots === 0) {
+      setMessage('OVER LOADED!')
+      return console.log('OVER LOADED!') 
+    }
   
     
     if (parkingLot.isFull()) {
@@ -99,17 +101,17 @@ export const Main = ({ parkingData }) => {
     }
    
     let park = await parkingLot.park(vals);
+    getAllSlots()
 
     if(!park.message){
-        setCardOpen(false);
-          setCarDir('in')
+      setCardOpen(false);
+      setCarDir('in')
       setCarAnimation((state) => true);
   
       setCardDisplay(vals)
-      getAllSlots(slotsId)
 
       setTimeout(() => {
-          setAvailableSlots(parkingLot.getAvailable());
+        setAvailableSlots(parkingLot.getAvailable());
           setCarAnimation((state) => false);
           setLoading(false)
           setCardDisplay({});
@@ -263,7 +265,7 @@ export const Main = ({ parkingData }) => {
    <Car animationState={carAnimation} type={carDir} car={cardDisplay} show={!cardOpen && cardDisplay.size}/>
 
       </section>
-      <section >
+      <section style={{minWidth: '500px'}}>
       <InfoBoard availableSlotsCount={availableSlots} />
       <div className={styles.main}>
         {rows.map((row, idx) => (

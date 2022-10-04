@@ -119,6 +119,10 @@ let comp = data.computation ? data.computation : {};
         <span className={`${styles.text} ${styles.textDate}`}>{moment(parking.parkedStart).format('lll')}</span>
     </div>
     <div className={styles.infoBodyCard}>
+        <div className={styles.label}>Car Type</div>
+        <span className={styles.text}>{`${String(parking.carType ? parking.carType : '').toUpperCase()}`}</span>
+    </div>
+    <div className={styles.infoBodyCard}>
         <div className={styles.label}>Slot Type & Rate</div>
         <span className={styles.text}>{`${String(data.slotType ? data.slotType : '').toUpperCase()}  | ${comp.rate}/hrs.`}</span>
     </div>
