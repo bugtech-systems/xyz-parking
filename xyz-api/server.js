@@ -62,33 +62,11 @@ let slotsId = null
 
 io.on('connection', async function(socket){
 
-
+    socket.on('connected', () => {
     io.emit("USER_CONNECTED", socket.id);
-
+    });
     //Socket Connecting!
-    if(socket && socket.handshake.headers && socket.handshake.headers.authorization && socket.handshake.headers.authorization.startsWith('Bearer ')
-    ) {
-    //   let idToken = socket.handshake.headers.authorization.split('Bearer ')[1];
-    //   let {authData} = await authJwt.decodeToken(idToken);
-  
-  
-      // if(authData.user_id){
-      //   createSocket({user_id: authData.user_id, socket_id: socket.id, tenant_id: authData.tenant_id}); 
-      //    io.to(socket.id).emit("USER_CONNECTED", { user_id: authData.user_id, tenant_id: authData.tenant_id});
-      // }
-  
-        //   if(authData.user_id){
-        // // createSocket({user_id: authData.user_id, socket_id: socket.id, tenant_id: authData.tenant_id}); 
-        //     if(isSet(authData.user_id)){
-        //       if(!isSet(global.users[authData.user_id])) global.users[authData.user_id] = [];
-        //        global.users[authData.user_id].push(socket.id);
-        //       console.log('CONNECTED!')
-        //       console.log(global.users)
-        //         io.emit("USER_CONNECTED", { user_id: authData.user_id, tenant_id: authData.tenant_id});
-        //     }
-        // }
-    }
-  
+ 
     socket.on('disconnect', () => {
         //    Object.entries(global.users).forEach(([a, b]) =>{
         //      let ind = b.indexOf(socket.id);

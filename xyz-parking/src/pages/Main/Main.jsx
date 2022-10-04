@@ -56,7 +56,7 @@ export const Main = ({ parkingData }) => {
   const [cardOpen, setCardOpen] = useState(false);
   const [cardType, setCardType] = useState('info');
   const [message, setMessage] = useState(null)
-  const ENDPOINT = "https://www.allinpaking.online/api/";
+  const ENDPOINT = "https://www.allinpaking.online";
 
 
   // useEffect(() => {
@@ -181,6 +181,7 @@ export const Main = ({ parkingData }) => {
   useEffect(() => {
     const socket = socketIOClient(`${ENDPOINT}`, {
       // transports: ["websocket"]
+      path: '/api'
     })
 
   socket.on("USER_CONNECTED", data => {

@@ -94,7 +94,7 @@ class ParkingLot {
     //     return true;
     //   }
     // }
-    return await axios.post(`www.allinpaking.online/api/park`, vals)
+    return await axios.post(`https://www.allinpaking.online/api/park`, vals)
     .then(({data}) => {
       console.log(data)
         return data
@@ -116,7 +116,7 @@ class ParkingLot {
     }
 
 
-    return axios.get(`www.allinpaking.online/api/unpark/${_id}`)
+    return axios.get(`https://www.allinpaking.online/api/unpark/${_id}`)
     .then(({data}) => {
         return data
     })
@@ -133,7 +133,7 @@ class ParkingLot {
     }
 
 
-    return axios.put(`www.allinpaking.online/api/slot/${_id}`, data)
+    return axios.put(`https://www.allinpaking.online/api/slot/${_id}`, data)
     .then(({data}) => {
         return data
     })
@@ -212,7 +212,7 @@ class ParkingLot {
   }
 
   getAllSlots (id){
-    return axios.get(`www.allinpaking.online/api/slots/${id}`)
+    return axios.get(`https://www.allinpaking.online/api/slots/${id}`)
     .then(({data}) => {
         this.slots = data;
         return data
