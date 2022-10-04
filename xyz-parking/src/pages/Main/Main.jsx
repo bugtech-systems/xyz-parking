@@ -56,7 +56,7 @@ export const Main = ({ parkingData }) => {
   const [cardOpen, setCardOpen] = useState(false);
   const [cardType, setCardType] = useState('info');
   const [message, setMessage] = useState(null)
-  const ENDPOINT = "http://localhost:4400";
+  const ENDPOINT = "/api";
 
 
   // useEffect(() => {
