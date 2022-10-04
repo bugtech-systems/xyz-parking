@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import socketIOClient from "socket.io-client";
+
 import { Car } from "../../components/Car";
 
 import styles from "./main.module.scss";
@@ -7,6 +9,7 @@ import { Controls } from "../../components/Controls";
 import ParkingLot from "../../lib/parking-lot";
 import { InfoBoard } from "../../components/InfoBoard/InfoBoard";
 import { CarInfoBoard } from "../../components/CarInfoBoard/CarInfoBoard";
+
 
 
 import axios from 'axios';
@@ -53,7 +56,7 @@ export const Main = ({ parkingData }) => {
   const [cardOpen, setCardOpen] = useState(false);
   const [cardType, setCardType] = useState('info');
   const [message, setMessage] = useState(null)
-  let slotsId = localStorage.getItem('slotsId');
+  const ENDPOINT = "http://localhost:4400";
 
 
   // useEffect(() => {
@@ -63,14 +66,16 @@ export const Main = ({ parkingData }) => {
 
 
   const handleClose = () => {
-
     setCardOpen(false)
     setCardDisplay({});
     setCardType('info')
     setMessage(null)
-
   }
+
+
   const getAllSlots = () => {
+    let slotsId = localStorage.getItem('slotsId');
+
         parkingLot.getAllSlots(slotsId)
         .then(a => {
           setParkingLot(new ParkingLot({slots: a, data: parkingData}));
@@ -173,6 +178,38 @@ export const Main = ({ parkingData }) => {
     distributeSlotsToRows();
   }, [slotsData, availableSlots]);
 
+  useEffect(() => {
+    const socket = socketIOClient(`${ENDPOINT}`, {
+      // transports: ["websocket"]
+    })
+
+  socket.on("USER_CONNECTED", data => {
+    console.log('PARKING RESPONSE')
+    console.log(data)
+    });
+
+
+      socket.on("parking-update", data => {
+        console.log(data)
+     let pk = localStorage.getItem('parkingData');
+     let pkData = pk ? JSON.parse(pk) : {}; 
+        if(pkData.merge){
+          getAllSlots();
+        }
+        });
+  
+  
+        socket.on("set-slotsId", slots => {
+          console.log('SET SLOTSID')
+          if(slots.slotsId){
+            localStorage.setItem('slotsId', slots.slotsId);
+            localStorage.setItem('parkingData', JSON.stringify(slots));
+            getAllSlots();
+          } 
+          console.log(slots.slotsId)
+          });
+  }, []);
+
   const handleUnpark = (vals) => {
 
     let { _id, parking } = vals;
@@ -195,7 +232,7 @@ export const Main = ({ parkingData }) => {
     }
     
       parkingLot.remove(_id).then(() => {
-        getAllSlots(slotsId)
+        getAllSlots()
   
         setTimeout(() => {
             setAvailableSlots(parkingLot.getAvailable());

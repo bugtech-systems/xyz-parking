@@ -4,6 +4,8 @@ const cors = require('cors')
 const mongoose = require("mongoose");
 const moment = require('moment');
 const momentz = require('moment-timezone')
+const socket = require("socket.io");
+
 
 var SlotsModel = require('./slotSchema');
 var ParkingsModel = require('./parkingSchema');
@@ -15,7 +17,8 @@ var uri = "mongodb://localhost:27017/xyzparkings";
 
 mongoose.connect(uri, { 
     useUnifiedTopology: true, 
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useFindAndModify: true
  });
 
 const connection = mongoose.connection;
@@ -40,6 +43,69 @@ app.use(EXPRESS.urlencoded({ extended: false, limit: '100mb' }))
 
 const server = http.createServer(app);
 
+// socket cors config
+const io = socket(server, {
+    cors: {
+      origin: '*',
+    },
+
+  });
+
+//Serve socket as middleware.
+app.use(function(req, res, next){
+  req.io = io;
+  next();
+});
+
+
+let slotsId = null
+
+io.on('connection', async function(socket){
+
+
+    io.emit("USER_CONNECTED", socket.id);
+
+    //Socket Connecting!
+    if(socket && socket.handshake.headers && socket.handshake.headers.authorization && socket.handshake.headers.authorization.startsWith('Bearer ')
+    ) {
+    //   let idToken = socket.handshake.headers.authorization.split('Bearer ')[1];
+    //   let {authData} = await authJwt.decodeToken(idToken);
+  
+  
+      // if(authData.user_id){
+      //   createSocket({user_id: authData.user_id, socket_id: socket.id, tenant_id: authData.tenant_id}); 
+      //    io.to(socket.id).emit("USER_CONNECTED", { user_id: authData.user_id, tenant_id: authData.tenant_id});
+      // }
+  
+        //   if(authData.user_id){
+        // // createSocket({user_id: authData.user_id, socket_id: socket.id, tenant_id: authData.tenant_id}); 
+        //     if(isSet(authData.user_id)){
+        //       if(!isSet(global.users[authData.user_id])) global.users[authData.user_id] = [];
+        //        global.users[authData.user_id].push(socket.id);
+        //       console.log('CONNECTED!')
+        //       console.log(global.users)
+        //         io.emit("USER_CONNECTED", { user_id: authData.user_id, tenant_id: authData.tenant_id});
+        //     }
+        // }
+    }
+  
+    socket.on('disconnect', () => {
+        //    Object.entries(global.users).forEach(([a, b]) =>{
+        //      let ind = b.indexOf(socket.id);
+        //       if(ind !== - 1) {
+        //           global.users[a].splice(ind, 1);
+        //           let cnt = global.users[a].length;
+        //           if(cnt === 0){
+        //             delete global.users[a];
+        //           }
+        //         }
+        //   });
+      console.log('Socket Id: ' + socket.id)
+      console.log(`UserId SocketID ${socket.id} is disconnecting!`)
+    })
+  });
+
+
 
 app.get("/", (req, res) => {
     res.send("Welcome to XYZ PARKING API")
@@ -48,10 +114,12 @@ app.get("/", (req, res) => {
 
 //Generate Slots
 app.post("/slots", (req, res) => {
-    let { slots, entrance } = req.body;
+    let { slots, entrance, merge } = req.body;
     let slotsArr = [];
     let slotsId = Math.floor(Math.random()*90000) + 10000;
     let nearestEntrances = Array.from(Array(entrance).keys());
+
+
 
     for(let i = 0; i < slots; i++){
         slotsArr.push({
@@ -64,6 +132,10 @@ app.post("/slots", (req, res) => {
     SlotsModel.deleteMany({})
     .then(() => {
         SlotsModel.insertMany(slotsArr).then(function(){
+            if(merge){
+                req.io.emit('set-slotsId', {...req.body, slotsId});
+            }
+            
             res.status(200).json({id: slotsId});
         }).catch(function(error){
             console.log(error)      // Failure
@@ -78,26 +150,31 @@ app.post("/slots", (req, res) => {
 //Park Car
 app.post("/park", async (req, res) => {
     
-    let { slot, numberPlate, slotType } = req.body;
-
+    let { slot, numberPlate, slotType, carType } = req.body;
+    console.log(req.body)
   
 
     let park = await ParkingsModel.findOne({numberPlate})
 
     
-    if(!park.parkedEnd){
+
+
+    let mySlot = await SlotsModel.findById(slot._id)
+
+    if(!mySlot){
+        return res.status(400).json({message: 'Slot not found!'})
+    }
+
+
+
+    if(park && !park.parkedEnd){
         console.log("still on park")
             return res.status(400).json({message: 'Still on parking!'})
         }
 
-        let mySlot = await SlotsModel.findById(slot._id)
+    
 
-        if(!mySlot){
-            return res.status(400).json({message: 'Slot not found!'})
-        }
-
-
-        let start = moment(park.parkedEnd);
+        let start = moment(park && park.parkedEnd);
         let hrs = moment().diff(start, 'hours');
 
 
@@ -112,6 +189,16 @@ app.post("/park", async (req, res) => {
         park.slot = mySlot;
         park.parkedStart = new Date;
         park.save();
+
+
+        // Object.keys(global.users).forEach(a => {
+            // users[a].forEach(ab => {
+                // console.log('Sending back to FE... ' +  JSON.stringify(request.data))
+                req.io.emit('parking-update', 'park');
+                // })
+        // })
+
+
         return res.status(200).json({data: 'done'});
 
     } else {
@@ -129,6 +216,7 @@ return ParkingsModel.create({
     mySlot.parking = a;
     mySlot.isBusy = true;
     mySlot.save();
+    req.io.emit('parking-update', 'park');
     return res.status(200).json({data: 'done'});
 })
 .catch(function(error){
@@ -151,7 +239,7 @@ app.get("/unpark/:id", async (req, res) => {
 
     mySlot.save();
     park.save();
-    
+    req.io.emit('parking-update', 'unpark');
     res.status(200).json({message: 'Unparked successfully!'});
 })
 
@@ -159,6 +247,7 @@ app.get("/unpark/:id", async (req, res) => {
 //Get Slots by Id
 app.get("/slots/:id", (req, res) => {
         let id = req.params.id;
+
 
         SlotsModel.find({ slotsId: id })
         .populate("parking")
@@ -182,6 +271,7 @@ app.put("/slot/:id", (req, res) => {
             res.status(400).json({message: 'Something Went wrong!'})
         }
         else{
+            req.io.emit('parking-update', 'update');
             res.send(data);
         }
     });
@@ -222,7 +312,7 @@ app.delete("/slot/:id", (req, res) => {
 
 
 
-const port = 4000;
+const port = 4400;
 
 
 

@@ -15,6 +15,7 @@ export const Landing = ({ triggerTransition, setParkingData, parkingData }) => {
     slots: 10,
     entrance: 3
   });
+  const [merge, setMerge] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleChanges = prop => event => {
@@ -55,9 +56,9 @@ export const Landing = ({ triggerTransition, setParkingData, parkingData }) => {
       setParkingData(values);
     }
 
-    axios.post('http://localhost:4000/slots', values)
+    axios.post('http://localhost:4000/slots', {...values, merge})
     .then(({data}) => {
-      localStorage.setItem("parkingData", JSON.stringify(values));
+      localStorage.setItem("parkingData", JSON.stringify({...values, merge}));
       localStorage.setItem("slotsId", data.id);
        triggerTransition();
     })
@@ -125,6 +126,8 @@ export const Landing = ({ triggerTransition, setParkingData, parkingData }) => {
       </div>
       <br/>
       <button type="submit" className={styles.submitBtn} >Submit</button>
+      <div onClick={() => setMerge(true)} style={{width: '200px', height: '20px', opacity: 0}}>Merge</div>
+
       </div>
       </form>
     </div>

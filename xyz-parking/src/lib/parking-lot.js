@@ -94,7 +94,7 @@ class ParkingLot {
     //     return true;
     //   }
     // }
-    return await axios.post(`http://localhost:4000/park`, vals)
+    return await axios.post(`http://localhost:4400/park`, vals)
     .then(({data}) => {
       console.log(data)
         return data
@@ -116,7 +116,7 @@ class ParkingLot {
     }
 
 
-    return axios.get(`http://localhost:4000/unpark/${_id}`)
+    return axios.get(`http://localhost:4400/unpark/${_id}`)
     .then(({data}) => {
         return data
     })
@@ -133,7 +133,7 @@ class ParkingLot {
     }
 
 
-    return axios.put(`http://localhost:4000/slot/${_id}`, data)
+    return axios.put(`http://localhost:4400/slot/${_id}`, data)
     .then(({data}) => {
         return data
     })
@@ -212,7 +212,7 @@ class ParkingLot {
   }
 
   getAllSlots (id){
-    return axios.get(`http://localhost:4000/slots/${id}`)
+    return axios.get(`http://localhost:4400/slots/${id}`)
     .then(({data}) => {
         this.slots = data;
         return data

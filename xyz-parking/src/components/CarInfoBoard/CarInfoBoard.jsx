@@ -53,7 +53,7 @@ let entrance = Array.from(Array(parkingData.entrance).keys());
 let imgs = data.img ? data.img : {};
 let parking = data.parking ? { ...imgs, ...data.parking} : {};
 let comp = data.computation ? data.computation : {};
-
+  console.log(Number(comp.hours) <= 1)
   return (
     <>
     {type === 'info' ?
@@ -124,11 +124,11 @@ let comp = data.computation ? data.computation : {};
     </div>
     <div className={styles.infoBodyCard}>
         <div className={styles.label}>Slot Type & Rate</div>
-        <span className={styles.text}>{`${String(data.slotType ? data.slotType : '').toUpperCase()}  | ${comp.rate}/hrs.`}</span>
+        <span className={styles.text}>{`${String(data.slotType ? data.slotType : '').toUpperCase()}  | ${comp.rate}/hr.`}</span>
     </div>
     <div className={styles.infoBodyCard}>
         <div className={styles.label}>Total Hours</div>
-        <span className={styles.text}>{comp.hours}/hrs.</span>
+        <span className={styles.text}>{comp.hours}/{Number(comp.hours) <= 1 ? 'hr' : 'hrs'}.</span>
         {/* <span className={styles.text}>{parking.hours}/hrs.</span> */}
     </div>
     <div className={styles.infoBodyCard}>
