@@ -18,7 +18,7 @@ var uri = "mongodb://localhost:27017/xyzparkings";
 mongoose.connect(uri, { 
     useUnifiedTopology: true, 
     useNewUrlParser: true,
-    useFindAndModify: true
+    useFindAndModify: false
  });
 
 const connection = mongoose.connection;
