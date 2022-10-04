@@ -56,7 +56,7 @@ export const Landing = ({ triggerTransition, setParkingData, parkingData }) => {
       setParkingData(values);
     }
 
-    axios.post('http://localhost:4000/slots', {...values, merge})
+    axios.post('/api/slots', {...values, merge})
     .then(({data}) => {
       localStorage.setItem("parkingData", JSON.stringify({...values, merge}));
       localStorage.setItem("slotsId", data.id);
