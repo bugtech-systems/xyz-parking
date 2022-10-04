@@ -56,7 +56,7 @@ export const Landing = ({ triggerTransition, setParkingData, parkingData }) => {
       setParkingData(values);
     }
 
-    axios.post('/api/slots', {...values, merge})
+    axios.post('https://www.allinpaking.online/api/slots', {...values, merge})
     .then(({data}) => {
       localStorage.setItem("parkingData", JSON.stringify({...values, merge}));
       localStorage.setItem("slotsId", data.id);
