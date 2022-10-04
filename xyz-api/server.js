@@ -48,7 +48,7 @@ const io = socket(server, {
     cors: {
       origin: '*',
     },
-    path: "/api/"
+    // path: "/"
   });
 
 //Serve socket as middleware.
