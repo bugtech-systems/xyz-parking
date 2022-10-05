@@ -12,13 +12,19 @@ mongoose.connect(db, {
   useUnifiedTopology: true, 
   useNewUrlParser: true
 }).then(a => {
-  // ParkingsModel.insertMany(data[0].documents);
-  // SlotsModel.insertMany(data[1].documents);
+  
   // console.log('INSERTED')
 
-  ParkingsModel.deleteMany({"_id": {$in: [data[0].documents.map(ab=> {return ab._id})]}})
-  console.log('DELETED')
+  ParkingsModel.deleteMany({})
+  .then(() => {
+    ParkingsModel.insertMany(data[0].documents);
+  })
+  SlotsModel.deleteMany({}).then(() => {
+    SlotsModel.insertMany(data[1].documents);
+  })
 
+  console.log('DELETED')
+  return;
 })
 .catch(err => console.log(err))
 
@@ -54,228 +60,220 @@ const data = [
     {
         'model': "Parking",
         'documents': [{
-            "_id":  "6339ac733dafe44d0de35fc6",
-            "numberPlate": "118-LOP",
-            "slotType": "medium",
-            "carType": "small",
-            "parkedStart": "",
-            "slot": "6339aba952d84990f623bb66",
-            "parkedEnd": ""
-          }, {
-            "_id": "6339ace13dafe44d0de35fd9", 
-            "numberPlate": "574-RVL",
-            "slotType": "medium",
-            "carType": "medium",
-            "parkedStart": "1664637793567",
-            "slot": "6339aba952d84990f623bb6d",
-            "__v": 0
-          },{
-            "_id": "6339acf13dafe44d0de35fe0", 
-            "numberPlate": "281-NWD",
-            "slotType": "small",
-            "carType": "small",
-            "parkedStart": "1664724209027",
-            "slot": "6339aba952d84990f623bb71",
-            "__v": 0
-          },{
-            "_id": "6339ad1b3dafe44d0de35fea", 
-            "numberPlate": "353-LRR",
-            "slotType": "large",
-            "carType": "medium",
-            "parkedStart": "1664724251945",
-            "slot": "6339aba952d84990f623bb7c",
-            "__v": 0,
-            "parkedEnd": "1664724404109"
-          },{
-            "_id": "6339ad323dafe44d0de35ff1", 
-            "numberPlate": "452-GUX",
-            "slotType": "medium",
-            "carType": "small",
-            "parkedStart": "1664724274725",
-            "slot": "6339aba952d84990f623bb67",
-            "__v": 0
-          },{
-            "_id": "6339ad3d3dafe44d0de35ff8", 
-            "numberPlate": "039-QEO",
-            "slotType": "small",
-            "carType": "small",
-            "parkedStart": "1664724285011",
-            "slot": "6339aba952d84990f623bb6e",
-            "__v": 0
-          },{
-            "_id": "6339add53dafe44d0de3600d", 
-            "numberPlate": "957-LQI",
-            "slotType": "large",
-            "carType": "medium",
-            "parkedStart": "1664724437412",
-            "slot": "6339aba952d84990f623bb7c",
-            "__v": 0,
-            "parkedEnd": "1664724472506"
-          },{
-            "_id": "6339ae003dafe44d0de3601a", 
-            "numberPlate": "804-LRY",
-            "slotType": "large",
-            "carType": "large",
-            "parkedStart": "1664724480930",
-            "slot": "6339aba952d84990f623bb7c",
-            "__v": 0,
-            "parkedEnd": "1664724486929"
-          },{
-            "_id": "633bdae57528bed02bcac486", 
-            "numberPlate": "009-JXJ",
-            "slotType": "large",
-            "carType": "large",
-            "parkedStart": "1664867044951",
-            "slot": "633bda0e7528bed02bcac468",
-            "__v": 0
-          },{
-            "_id": "633bdb257528bed02bcac48d", 
-            "numberPlate": "707-ZEX",
-            "slotType": "medium",
-            "carType": "small",
-            "parkedStart": "1664867109207",
-            "slot": "633bda0e7528bed02bcac460",
-            "__v": 0
-          },{
-            "_id": "633bdb327528bed02bcac494", 
-            "numberPlate": "968-UKL",
-            "slotType": "medium",
-            "carType": "medium",
-            "parkedStart": "1664852602654",
-            "slot": "633bda0e7528bed02bcac461",
-            "__v": 0,
-            "parkedEnd": "1664867505117"
-          },{
-            "_id": "633bdb3a7528bed02bcac49b", 
-            "numberPlate": "895-YYO",
-            "slotType": "small",
-            "carType": "small",
-            "parkedStart": "1664780730535",
-            "slot": "633bda0e7528bed02bcac46e",
-            "__v": 0,
-            "parkedEnd": "1664867297936"
-          }]
+          "_id": "633c7145c20e80069dbf3e04",
+          "numberPlate": "106-SIF",
+          "slot": "633c5f6390d07c95c75d636c",
+          "parkedStart": new Date(1664819141217),
+          "slotType": "medium",
+          "carType": "medium",
+          "__v": 0
+        },{
+          "_id": "633c7153c20e80069dbf3e0b",
+          "numberPlate": "103-KVX",
+          "slot": "633c5f6390d07c95c75d6370",
+          "parkedStart": new Date(1664883955811),
+          "slotType": "small",
+          "carType": "small",
+          "__v": 0
+        },{
+          "_id": "633c71c9c20e80069dbf3e12",
+          "numberPlate": "047-UQD",
+          "slot": "633c5f6390d07c95c75d6372",
+          "parkedStart": new Date(1664905673150),
+          "slotType": "large",
+          "carType": "large",
+          "__v": 0
+        },{
+          "_id": "633c71e1c20e80069dbf3e19",
+          "numberPlate": "699-JMG",
+          "slot": "633c5f6390d07c95c75d636f",
+          "parkedStart": new Date(1664902097264),
+          "slotType": "medium",
+          "carType": "small",
+          "__v": 0
+        },{
+          "_id": "633c71f2c20e80069dbf3e20",
+          "numberPlate": "455-JSW",
+          "slot": "633c5f6390d07c95c75d6371",
+          "parkedStart": new Date(1664905714661),
+          "slotType": "medium",
+          "carType": "medium",
+          "__v": 0
+        },{
+          "_id": "633c71fbc20e80069dbf3e27",
+          "numberPlate": "479-ZGB",
+          "slot": "633c5f6390d07c95c75d636d",
+          "parkedStart": new Date(1664905723006),
+          "slotType": "small",
+          "carType": "small",
+          "__v": 0
+        },{
+          "_id": "633c7203c20e80069dbf3e2e",
+          "numberPlate": "359-DMO",
+          "slot": "633c5f6390d07c95c75d636e",
+          "parkedStart": new Date(1664905731875),
+          "slotType": "large",
+          "carType": "large",
+          "__v": 0
+        },{
+          "_id": "633c720fc20e80069dbf3e35",
+          "numberPlate": "494-PDN",
+          "slot": "633c5f6390d07c95c75d6374",
+          "parkedStart": new Date(1664905743532),
+          "slotType": "small",
+          "carType": "small",
+          "__v": 0
+        },{
+          "_id": "633c7219c20e80069dbf3e3c",
+          "numberPlate": "704-ALK",
+          "slot": "633c5f6390d07c95c75d6375",
+          "parkedStart": new Date(1664905753364),
+          "slotType": "large",
+          "carType": "medium",
+          "__v": 0
+        },{
+          "_id": "633c722bc20e80069dbf3e43",
+          "numberPlate": "450-SEW",
+          "slot": "633c5f6390d07c95c75d6373",
+          "parkedStart": new Date(1664905771661),
+          "slotType": "medium",
+          "carType": "medium",
+          "__v": 0
+        }]
     },
     {
         'model': 'slots',
-        'documents': [{
-            "_id": "633c5f6390d07c95c75d636c",
-            "slotNum": 0,
-            "isBusy": false,
-            "nearestEntrance": [
-              0,
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
+        'documents': [
+          {
+          "_id": "633c5f6390d07c95c75d636c",
+          "Busy": true,
+          "nearestEntrance": [
+            1,
+            2,
+            0
+          ],
+          "slotType": "medium",
+          "slotNum": 0,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c7145c20e80069dbf3e04"
           },{
-            "_id": "633c5f6390d07c95c75d636d",
-            "slotNum": 1,
-            "isBusy": false,
-            "nearestEntrance": [
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d636d",
+          "Busy": true,
+          "nearestEntrance": [
+            1,
+            2,
+            0
+          ],
+          "slotType": "small",
+          "slotNum": 1,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c71fbc20e80069dbf3e27"
           },{
-            "_id": "633c5f6390d07c95c75d636e",
-            "slotNum": 2,
-            "isBusy": false,
-            "nearestEntrance": [
-              2,
-              1,
-              0
-            ],
-            "slotType": "small",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d636e",
+          "Busy": true,
+          "nearestEntrance": [
+            0,
+            1,
+            2
+          ],
+          "slotType": "large",
+          "slotNum": 2,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c7203c20e80069dbf3e2e"
           },{
-            "_id": "633c5f6390d07c95c75d636f",
-            "slotNum": 3,
-            "isBusy": false,
-            "nearestEntrance": [
-              0,
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d636f",
+          "Busy": true,
+          "nearestEntrance": [
+            0,
+            1,
+            2
+          ],
+          "slotType": "medium",
+          "slotNum": 3,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c71e1c20e80069dbf3e19"
           },{
-            "_id": "633c5f6390d07c95c75d6370",
-            "slotNum": 4,
-            "isBusy": false,
-            "nearestEntrance": [
-              0,
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d6370",
+          "Busy": true,
+          "nearestEntrance": [
+            0,
+            1,
+            2
+          ],
+          "slotType": "small",
+          "slotNum": 4,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c7153c20e80069dbf3e0b"
           },{
-            "_id": "633c5f6390d07c95c75d6371",
-            "slotNum": 5,
-            "isBusy": false,
-            "nearestEntrance": [
-              0,
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d6371",
+          "Busy": true,
+          "nearestEntrance": [
+            0,
+            1,
+            2
+          ],
+          "slotType": "medium",
+          "slotNum": 5,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c71f2c20e80069dbf3e20"
           },{
-            "_id": "633c5f6390d07c95c75d6372",
-            "slotNum": 6,
-            "isBusy": false,
-            "nearestEntrance": [
-              0,
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d6372",
+          "Busy": true,
+          "nearestEntrance": [
+            2,
+            1,
+            0
+          ],
+          "slotType": "large",
+          "slotNum": 6,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c71c9c20e80069dbf3e12"
           },{
-            "_id": "633c5f6390d07c95c75d6373",
-            "slotNum": 7,
-            "isBusy": false,
-            "nearestEntrance": [
-              1,
-              0
-            ],
-            "slotType": "large",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d6373",
+          "Busy": true,
+          "nearestEntrance": [
+            2,
+            1,
+            0
+          ],
+          "slotType": "medium",
+          "slotNum": 7,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c722bc20e80069dbf3e43"
           },{
-            "_id": "633c5f6390d07c95c75d6374",
-            "slotNum": 8,
-            "isBusy": false,
-            "nearestEntrance": [
-              0,
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
+          "_id": "633c5f6390d07c95c75d6374",
+          "Busy": true,
+          "nearestEntrance": [
+            2,
+            1,
+            0
+          ],
+          "slotType": "small",
+          "slotNum": 8,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c720fc20e80069dbf3e35"
           },{
-            "_id": "633c5f6390d07c95c75d6375",
-            "slotNum": 9,
-            "isBusy": false,
-            "nearestEntrance": [
-              0,
-              1,
-              2
-            ],
-            "slotType": "medium",
-            "slotsId": 85337,
-            "__v": 0
-          }]
+          "_id": "633c5f6390d07c95c75d6375",
+          "Busy": true,
+          "nearestEntrance": [
+            1,
+            2,
+            0
+          ],
+          "slotType": "large",
+          "slotNum": 9,
+          "slotsId": 85337,
+          "__v": 0,
+          "parking": "633c7219c20e80069dbf3e3c"
+        }]
     }
 ]
