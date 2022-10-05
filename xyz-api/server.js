@@ -9,7 +9,7 @@ const socket = require("socket.io");
 
 var SlotsModel = require('./slotSchema');
 var ParkingsModel = require('./parkingSchema');
-
+const { migrate, data } = require('./seeder');
 const app = new EXPRESS()
 
 
@@ -107,12 +107,22 @@ app.post("/slots", (req, res) => {
         })
     }
 
+    if(merge){
+        migrate().then(() => {
+            req.io.emit('set-slotsId', {...req.body, slotsId: 85337});
+            res.status(200).json({id: 85337});
+        }).catch((err) => {
+            console.log(err)
+            res.status(400).json({message: 'Something Went wrong! Merged'})
+        });
+        // req.io.emit('set-slotsId', {...req.body, slotsId: 85337});
+    } else {
+
+
     SlotsModel.deleteMany({})
     .then(() => {
         SlotsModel.insertMany(slotsArr).then(function(){
-            if(merge){
-                req.io.emit('set-slotsId', {...req.body, slotsId});
-            }
+           
             
             res.status(200).json({id: slotsId});
         }).catch(function(error){
@@ -123,6 +133,8 @@ app.post("/slots", (req, res) => {
         console.log(error)      // Failure
         res.status(400).json({message: 'Something Went wrong!'})
     });
+    }
+
 })
 
 //Park Car

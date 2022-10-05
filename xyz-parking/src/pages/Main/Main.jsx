@@ -58,6 +58,7 @@ export const Main = ({ parkingData }) => {
   const [message, setMessage] = useState(null)
   const ENDPOINT = "http://49.145.117.33:3000";
 
+  // const ENDPOINT = "http://localhost:3000";
 
   // useEffect(() => {
   //   setParkingLot(new ParkingLot(parkingData.slots));

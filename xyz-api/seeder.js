@@ -6,9 +6,11 @@ const db = "mongodb://localhost:27017/xyzparkings";
 var ParkingsModel = require('./parkingSchema');
 var SlotsModel = require('./slotSchema');
 
+const migrate = () => {
 
 
-mongoose.connect(db, { 
+
+return mongoose.connect(db, { 
   useUnifiedTopology: true, 
   useNewUrlParser: true
 }).then(a => {
@@ -26,9 +28,8 @@ mongoose.connect(db, {
   console.log('DELETED')
   return;
 })
-.catch(err => console.log(err))
-
-;
+.catch(err => console.log(err));
+}
 
 // No longer necessary:
 // mongoos/e.set('useFindAndModify', false);
@@ -146,7 +147,7 @@ const data = [
         'documents': [
           {
           "_id": "633c5f6390d07c95c75d636c",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             1,
             2,
@@ -159,7 +160,7 @@ const data = [
           "parking": "633c7145c20e80069dbf3e04"
           },{
           "_id": "633c5f6390d07c95c75d636d",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             1,
             2,
@@ -172,7 +173,7 @@ const data = [
           "parking": "633c71fbc20e80069dbf3e27"
           },{
           "_id": "633c5f6390d07c95c75d636e",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             0,
             1,
@@ -185,7 +186,7 @@ const data = [
           "parking": "633c7203c20e80069dbf3e2e"
           },{
           "_id": "633c5f6390d07c95c75d636f",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             0,
             1,
@@ -198,7 +199,7 @@ const data = [
           "parking": "633c71e1c20e80069dbf3e19"
           },{
           "_id": "633c5f6390d07c95c75d6370",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             0,
             1,
@@ -211,7 +212,7 @@ const data = [
           "parking": "633c7153c20e80069dbf3e0b"
           },{
           "_id": "633c5f6390d07c95c75d6371",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             0,
             1,
@@ -224,7 +225,7 @@ const data = [
           "parking": "633c71f2c20e80069dbf3e20"
           },{
           "_id": "633c5f6390d07c95c75d6372",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             2,
             1,
@@ -237,7 +238,7 @@ const data = [
           "parking": "633c71c9c20e80069dbf3e12"
           },{
           "_id": "633c5f6390d07c95c75d6373",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             2,
             1,
@@ -250,7 +251,7 @@ const data = [
           "parking": "633c722bc20e80069dbf3e43"
           },{
           "_id": "633c5f6390d07c95c75d6374",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             2,
             1,
@@ -263,7 +264,7 @@ const data = [
           "parking": "633c720fc20e80069dbf3e35"
           },{
           "_id": "633c5f6390d07c95c75d6375",
-          "Busy": true,
+          "isBusy": true,
           "nearestEntrance": [
             1,
             2,
@@ -277,3 +278,5 @@ const data = [
         }]
     }
 ]
+
+module.exports = { migrate, data}
